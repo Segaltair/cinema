@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Like from "./common/like"
 import * as MovieService from '../service/fakeMovieService';
 
 export default class Poster extends Component {
@@ -21,35 +22,41 @@ export default class Poster extends Component {
                         <th>Stock</th>
                         <th>Rate</th>
                         <th></th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
-                    {this.getRowsForMovies()}
+                    {this.state.movies.map(movie => {
+                        const {_id, title, genre, numberInStock, dailyRentalRate, liked} = movie;
+                        return <tr key={_id}>
+                            <td>{title}</td>
+                            <td>{genre.name}</td>
+                            <td>{numberInStock}</td>
+                            <td>{dailyRentalRate}</td>
+                            <td>
+                                <Like
+                                    liked={liked}
+                                    onClick={() => this.handleLike(movie)}
+                                />
+                            </td>
+                            <td>
+                                <button className="btn btn-danger btn-sm" onClick={() => this.deleteMovie(_id)}>Delete
+                                </button>
+                            </td>
+                        </tr>
+                    })}
                     </tbody>
                 </table>
             </React.Fragment>
         );
     };
 
-    getRowForMovie = (id) => {
-        const {_id, title, genre, numberInStock, dailyRentalRate} = MovieService.getMovie(id);
-        return <tr key={_id}>
-            <td>{title}</td>
-            <td>{genre.name}</td>
-            <td>{numberInStock}</td>
-            <td>{dailyRentalRate}</td>
-            <td>
-                <button className="btn btn-danger btn-sm" onClick={() => this.deleteMovie(_id)}>Delete</button>
-            </td>
-        </tr>;
-    };
-
-    getRowsForMovies = () => {
-        let trMovies = [];
-
-        this.state.movies.filter(movie => trMovies.push(this.getRowForMovie(movie._id)));
-
-        return trMovies;
+    handleLike = (movie) => {
+        const movies = [...this.state.movies];
+        const index = movies.indexOf(movie);
+        movie[index] = {...movies[index]};
+        movies[index].liked = !movies[index].liked;
+        this.setState({movies})
     };
 
     deleteMovie = (id) => {
