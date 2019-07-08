@@ -1,21 +1,13 @@
-import React, {Component} from 'react'
+import React from 'react'
 import "@fortawesome/fontawesome-free/css/all.css";
 
-export default class Like extends Component {
-    render() {
-        return (<div>
-            <i className={this.isLiked()}
-               style={{cursor: "pointer"}}
-               aria-hidden={"true"}
-               onClick={this.props.onClick}
-            />
-        </div>)
-    }
+const Like = props =>
+    (<div>
+        <i className={props.liked ? "fas fa-heart" : "far fa-heart"}
+           style={{cursor: "pointer"}}
+           aria-hidden={"true"}
+           onClick={props.onClick}
+        />
+    </div>);
 
-    isLiked() {
-        if (this.props.liked)
-            return "fas fa-heart";
-        else
-            return "far fa-heart";
-    }
-}
+export default Like;

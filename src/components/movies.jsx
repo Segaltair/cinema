@@ -1,19 +1,27 @@
 import React, {Component} from 'react';
 import Like from "./common/like"
+import Pagination from "./common/pagination";
 import * as MovieService from '../service/fakeMovieService';
+import {paginate} from "../utils/paginate"
 
-export default class Poster extends Component {
+export default class Movies extends Component {
     state = {
-        movies: MovieService.getMovies()
+        movies: MovieService.getMovies(),
+        pageSize: 4,
+        currentPage: 1
     };
 
     render() {
-        if (this.state.movies.length === 0)
+        let {length: count} = this.state.movies;
+        const {pageSize, currentPage, movies: allMovies} = this.state;
+        if (count === 0)
             return (<h1>There is no movies!</h1>);
+
+        const movies = paginate(allMovies, currentPage, pageSize);
 
         return (
             <React.Fragment>
-                <h1>Showing {this.state.movies.length} movies in the database</h1>
+                <h1>Showing {count} movies in the database</h1>
                 <table className="table">
                     <thead>
                     <tr>
@@ -26,7 +34,7 @@ export default class Poster extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.movies.map(movie => {
+                    {movies.map(movie => {
                         const {_id, title, genre, numberInStock, dailyRentalRate, liked} = movie;
                         return <tr key={_id}>
                             <td>{title}</td>
@@ -47,6 +55,12 @@ export default class Poster extends Component {
                     })}
                     </tbody>
                 </table>
+                <Pagination
+                    itemsCount={count}
+                    pageSize={pageSize}
+                    onPageChanged={this.handlePageChange}
+                    currentPage={currentPage}
+                />
             </React.Fragment>
         );
     };
@@ -63,4 +77,8 @@ export default class Poster extends Component {
         const movies = this.state.movies.filter(m => m._id !== id);
         this.setState({movies: movies});
     };
+
+    handlePageChange = (pageNumber) => {
+        this.setState({currentPage: pageNumber});
+    }
 }
