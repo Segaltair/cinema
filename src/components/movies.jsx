@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import Like from "./common/like"
 import ListGroup from "./common/listGroup"
 import Pagination from "./common/pagination";
 import * as MovieService from '../service/fakeMovieService';
 import {getGenres} from "../service/fakeGenreService"
 import {paginate} from "../utils/paginate"
+import MovieTable from "./movieTable";
 
 export default class Movies extends Component {
     state = {
@@ -41,40 +41,11 @@ export default class Movies extends Component {
                 </div>
                 <div className="col">
                     <h1>Showing {filtered.length} movies in the database</h1>
-                    <table className="table">
-                        <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Genre</th>
-                            <th>Stock</th>
-                            <th>Rate</th>
-                            <th></th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {movies.map(movie => {
-                            const {_id, title, genre, numberInStock, dailyRentalRate, liked} = movie;
-                            return <tr key={_id}>
-                                <td>{title}</td>
-                                <td>{genre.name}</td>
-                                <td>{numberInStock}</td>
-                                <td>{dailyRentalRate}</td>
-                                <td>
-                                    <Like
-                                        liked={liked}
-                                        onClick={() => this.handleLike(movie)}
-                                    />
-                                </td>
-                                <td>
-                                    <button className="btn btn-danger btn-sm"
-                                            onClick={() => this.deleteMovie(_id)}>Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        })}
-                        </tbody>
-                    </table>
+                    <MovieTable
+                        movies={movies}
+                        onDelete={this.handleDelete}
+                        onLike={this.handleLike}
+                    />
                     <Pagination
                         itemsCount={filtered.length}
                         pageSize={pageSize}
@@ -98,7 +69,7 @@ export default class Movies extends Component {
         this.setState({movies})
     };
 
-    deleteMovie = id => {
+    handleDelete = id => {
         const movies = this.state.movies.filter(m => m._id !== id);
         this.setState({movies: movies});
     };
