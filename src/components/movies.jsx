@@ -5,28 +5,38 @@ import * as MovieService from '../service/fakeMovieService';
 import {getGenres} from "../service/fakeGenreService"
 import {paginate} from "../utils/paginate"
 import MovieTable from "./movieTable";
+import _ from "lodash";
 
 export default class Movies extends Component {
     state = {
         movies: [],
         pageSize: 4,
         currentPage: 1,
-        genres: []
+        genres: [],
+        sortColumn: {path: "title", order: "asc"}
     };
 
     componentDidMount() {
-        const genres = [{name: "All genres"}, ...getGenres()];
+        const genres = [{_id: null, name: "All genres"}, ...getGenres()];
         this.setState({movies: MovieService.getMovies(), genres})
     }
 
     render() {
-        const {pageSize, currentPage, movies: allMovies, selectedGenre} = this.state;
+        const {
+            pageSize,
+            currentPage,
+            movies: allMovies,
+            selectedGenre,
+            sortColumn
+        } = this.state;
 
         const filtered = selectedGenre && selectedGenre._id
             ? allMovies.filter(movie => movie.genre._id === selectedGenre._id)
             : allMovies;
 
-        const movies = paginate(filtered, currentPage, pageSize);
+        const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+
+        const movies = paginate(sorted, currentPage, pageSize);
 
         if (allMovies.count === 0) return (<h1>There is no movies!</h1>);
 
@@ -45,6 +55,7 @@ export default class Movies extends Component {
                         movies={movies}
                         onDelete={this.handleDelete}
                         onLike={this.handleLike}
+                        onSort={this.handleSort}
                     />
                     <Pagination
                         itemsCount={filtered.length}
@@ -55,6 +66,17 @@ export default class Movies extends Component {
                 </div>
             </div>
         );
+    };
+
+    handleSort = path => {
+        const sortColumn = {...this.state.sortColumn};
+        if (sortColumn.path === path)
+            sortColumn.order = (sortColumn.order === "asc") ? "desc" : "asc";
+        else {
+            sortColumn.path = path;
+            sortColumn.order = "asc";
+        }
+        this.setState({sortColumn})
     };
 
     handleGenreSelect = genre => {
