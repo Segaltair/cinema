@@ -26,17 +26,10 @@ export default class Movies extends Component {
             pageSize,
             currentPage,
             movies: allMovies,
-            selectedGenre,
             sortColumn
         } = this.state;
 
-        const filtered = selectedGenre && selectedGenre._id
-            ? allMovies.filter(movie => movie.genre._id === selectedGenre._id)
-            : allMovies;
-
-        const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
-
-        const movies = paginate(sorted, currentPage, pageSize);
+        const {totalCount, data: movies} = this.getPagedData();
 
         if (allMovies.count === 0) return (<h1>There is no movies!</h1>);
 
@@ -50,7 +43,7 @@ export default class Movies extends Component {
                     />
                 </div>
                 <div className="col">
-                    <h1>Showing {filtered.length} movies in the database</h1>
+                    <h1>Showing {totalCount} movies in the database</h1>
                     <MoviesTable
                         movies={movies}
                         onDelete={this.handleDelete}
@@ -59,7 +52,7 @@ export default class Movies extends Component {
                         sortColumn={sortColumn}
                     />
                     <Pagination
-                        itemsCount={filtered.length}
+                        itemsCount={totalCount}
                         pageSize={pageSize}
                         onPageChanged={this.handlePageChange}
                         currentPage={currentPage}
@@ -67,6 +60,26 @@ export default class Movies extends Component {
                 </div>
             </div>
         );
+    };
+
+    getPagedData = () => {
+        const {
+            pageSize,
+            currentPage,
+            movies: allMovies,
+            selectedGenre,
+            sortColumn
+        } = this.state;
+
+        const filtered = selectedGenre && selectedGenre._id
+            ? allMovies.filter(movie => movie.genre._id === selectedGenre._id)
+            : allMovies;
+
+        const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
+
+        const movies = paginate(sorted, currentPage, pageSize);
+
+        return {totalCount: filtered.length, data: movies}
     };
 
     handleSort = sortColumn => {

@@ -18,7 +18,7 @@ export default class TableBody extends Component {
 
     createKey = (item, column) => {
         return item._id + (column.path || column.key);
-    }
+    };
 
     renderCell = (item, column) => {
         if (column.content)
