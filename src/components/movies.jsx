@@ -4,7 +4,7 @@ import Pagination from "./common/pagination";
 import * as MovieService from '../service/fakeMovieService';
 import {getGenres} from "../service/fakeGenreService"
 import {paginate} from "../utils/paginate"
-import MovieTable from "./movieTable";
+import MoviesTable from "./moviesTable";
 import _ from "lodash";
 
 export default class Movies extends Component {
@@ -51,11 +51,12 @@ export default class Movies extends Component {
                 </div>
                 <div className="col">
                     <h1>Showing {filtered.length} movies in the database</h1>
-                    <MovieTable
+                    <MoviesTable
                         movies={movies}
                         onDelete={this.handleDelete}
                         onLike={this.handleLike}
                         onSort={this.handleSort}
+                        sortColumn={sortColumn}
                     />
                     <Pagination
                         itemsCount={filtered.length}
@@ -68,14 +69,7 @@ export default class Movies extends Component {
         );
     };
 
-    handleSort = path => {
-        const sortColumn = {...this.state.sortColumn};
-        if (sortColumn.path === path)
-            sortColumn.order = (sortColumn.order === "asc") ? "desc" : "asc";
-        else {
-            sortColumn.path = path;
-            sortColumn.order = "asc";
-        }
+    handleSort = sortColumn => {
         this.setState({sortColumn})
     };
 
