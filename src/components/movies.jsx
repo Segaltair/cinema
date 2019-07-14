@@ -7,13 +7,16 @@ import {paginate} from "../utils/paginate"
 import MoviesTable from "./moviesTable";
 import {Link} from "react-router-dom";
 import _ from "lodash";
+import SearchBox from "./common/searchBox";
 
 export default class Movies extends Component {
     state = {
         movies: [],
-        pageSize: 4,
-        currentPage: 1,
         genres: [],
+        pageSize: 4,
+        searchQuery: "",
+        selectedGenre: null,
+        currentPage: 1,
         sortColumn: {path: "title", order: "asc"}
     };
 
@@ -27,7 +30,8 @@ export default class Movies extends Component {
             pageSize,
             currentPage,
             movies: allMovies,
-            sortColumn
+            sortColumn,
+            searchQuery
         } = this.state;
 
         const {totalCount, data: movies} = this.getPagedData();
@@ -52,6 +56,7 @@ export default class Movies extends Component {
                         New Movie
                     </Link>
                     <h1>Showing {totalCount} movies in the database</h1>
+                    <SearchBox value={searchQuery} onChange={this.handleSearch}/>
                     <MoviesTable
                         movies={movies}
                         onDelete={this.handleDelete}
@@ -76,12 +81,18 @@ export default class Movies extends Component {
             currentPage,
             movies: allMovies,
             selectedGenre,
+            searchQuery,
             sortColumn
         } = this.state;
 
-        const filtered = selectedGenre && selectedGenre._id
-            ? allMovies.filter(movie => movie.genre._id === selectedGenre._id)
-            : allMovies;
+        let filtered = allMovies;
+        if (searchQuery) {
+            filtered = allMovies.filter(m =>
+                m.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+            )
+        } else if (selectedGenre && selectedGenre._id) {
+            filtered = allMovies.filter(movie => movie.genre._id === selectedGenre._id)
+        }
 
         const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
 
@@ -90,12 +101,16 @@ export default class Movies extends Component {
         return {totalCount: filtered.length, data: movies}
     };
 
+    handleSearch = query => {
+        this.setState({searchQuery: query, selectedGenre: null, currentPage: 1})
+    };
+
     handleSort = sortColumn => {
         this.setState({sortColumn})
     };
 
     handleGenreSelect = genre => {
-        this.setState({selectedGenre: genre, currentPage: 1})
+        this.setState({selectedGenre: genre, seatchQuery: "", currentPage: 1})
     };
 
     handleLike = movie => {
