@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import ListGroup from "./common/listGroup"
 import Pagination from "./common/pagination";
 import * as MovieService from '../service/fakeMovieService';
-import {getGenres} from "../service/fakeGenreService"
+import {getGenres} from "../service/genreService"
 import {paginate} from "../utils/paginate"
 import MoviesTable from "./moviesTable";
 import {Link} from "react-router-dom";
@@ -20,8 +20,10 @@ export default class Movies extends Component {
         sortColumn: {path: "title", order: "asc"}
     };
 
-    componentDidMount() {
-        const genres = [{_id: null, name: "All genres"}, ...getGenres()];
+    async componentDidMount() {
+        const {data} = await getGenres();
+        console.log(data);
+        const genres = [{id: null, name: "All genres"}, ...data];
         this.setState({movies: MovieService.getMovies(), genres})
     }
 
@@ -90,8 +92,8 @@ export default class Movies extends Component {
             filtered = allMovies.filter(m =>
                 m.title.toLowerCase().startsWith(searchQuery.toLowerCase())
             )
-        } else if (selectedGenre && selectedGenre._id) {
-            filtered = allMovies.filter(movie => movie.genre._id === selectedGenre._id)
+        } else if (selectedGenre && selectedGenre.id) {
+            filtered = allMovies.filter(movie => movie.genre.id === selectedGenre.id)
         }
 
         const sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
