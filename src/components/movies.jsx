@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import ListGroup from "./common/listGroup"
 import Pagination from "./common/pagination";
-import * as MovieService from '../service/fakeMovieService';
+import {getMovies} from "../service/movieService";
 import {getGenres} from "../service/genreService"
 import {paginate} from "../utils/paginate"
 import MoviesTable from "./moviesTable";
@@ -22,9 +22,9 @@ export default class Movies extends Component {
 
     async componentDidMount() {
         const {data} = await getGenres();
-        console.log(data);
         const genres = [{id: null, name: "All genres"}, ...data];
-        this.setState({movies: MovieService.getMovies(), genres})
+        const {data: movies} = await getMovies();
+        this.setState({movies, genres});
     }
 
     render() {
@@ -112,7 +112,7 @@ export default class Movies extends Component {
     };
 
     handleGenreSelect = genre => {
-        this.setState({selectedGenre: genre, seatchQuery: "", currentPage: 1})
+        this.setState({selectedGenre: genre, searchQuery: "", currentPage: 1})
     };
 
     handleLike = movie => {
@@ -124,7 +124,9 @@ export default class Movies extends Component {
     };
 
     handleDelete = id => {
-        const movies = this.state.movies.filter(m => m._id !== id);
+        // const original
+
+        const movies = this.state.movies.filter(m => m.id !== id);
         this.setState({movies: movies});
     };
 

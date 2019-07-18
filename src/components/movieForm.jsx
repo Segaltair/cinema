@@ -17,7 +17,7 @@ export default class MovieForm extends Form {
     };
 
     schema = {
-        _id: Joi.string(),
+        id: Joi.string(),
         title: Joi.string().required().label("Title"),
         genreId: Joi.string().required().label("Genre"),
         numberInStock: Joi.number().required().min(0).max(100).label("Number in Stock"),
@@ -54,7 +54,7 @@ export default class MovieForm extends Form {
 
     mapToViewModel(movie) {
         return {
-            _id: movie._id,
+            id: movie.id,
             title: movie.title,
             genreId: movie.genre._id,
             numberInStock: movie.numberInStock,
