@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import ListGroup from "./common/listGroup"
 import Pagination from "./common/pagination";
-import {getMovies} from "../service/movieService";
+import {deleteMovie, getMovies} from "../service/movieService";
 import {getGenres} from "../service/genreService"
 import {paginate} from "../utils/paginate"
 import MoviesTable from "./moviesTable";
 import {Link} from "react-router-dom";
 import _ from "lodash";
 import SearchBox from "./common/searchBox";
+import {toast} from "react-toastify";
 
 export default class Movies extends Component {
     state = {
@@ -123,11 +124,21 @@ export default class Movies extends Component {
         this.setState({movies})
     };
 
-    handleDelete = id => {
-        // const original
+    handleDelete = async id => {
+        const originalMovies = this.state.movies;
+        const movies = originalMovies.filter(m => m.id !== id);
+        this.setState({movies});
 
-        const movies = this.state.movies.filter(m => m.id !== id);
-        this.setState({movies: movies});
+        try {
+            await deleteMovie(id)
+        } catch (e) {
+            if (e.response && e.response.status === 404)
+                toast.error("This movie already been removed")
+
+            this.setState({movies: originalMovies})
+        }
+
+
     };
 
     handlePageChange = (pageNumber) => {
