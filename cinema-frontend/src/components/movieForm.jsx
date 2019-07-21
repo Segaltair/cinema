@@ -67,7 +67,7 @@ export default class MovieForm extends Form {
         return {
             id: movie.id,
             title: movie.title,
-            genreId: movie.genre._id,
+            genreId: movie.genre.id,
             numberInStock: movie.numberInStock,
             dailyRentalRate: movie.dailyRentalRate
         }
