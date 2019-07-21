@@ -8,12 +8,8 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,14 +24,12 @@ public class CinemaController {
     private GenreRepository genreRepository;
 
     @GetMapping(value = "/movie")
-    public List<Movie> getMovies(HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");//TODO перенести в interceptor
+    public List<Movie> getMovies() {
         return movieRepository.findAll();
     }
 
     @GetMapping(value = "/movie/{id}")
-    public ResponseEntity getMovie(@PathVariable Integer id, HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+    public ResponseEntity getMovie(@PathVariable Integer id) {
         Optional<Movie> movie = movieRepository.findById(id);
 
         return movie
@@ -44,14 +38,12 @@ public class CinemaController {
     }
 
     @GetMapping(value = "/genre")
-    public List<MovieGenre> getGenries(HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+    public List<MovieGenre> getGenres() {
         return genreRepository.findAll();
     }
 
     @DeleteMapping(value = "/movie/{id}")
-    public void deleteMovie(@PathVariable Integer id, HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+    public void deleteMovie(@PathVariable Integer id) {
         Optional<Movie> movie = movieRepository.findById(id);
         movieRepository.delete(movie.get());
     }
