@@ -12,7 +12,14 @@ export function getMovie(movieId) {
 }
 
 export function saveMovie(movie) {
+    if (movie.id) {
+        const body = {...movie};
+        delete body.id;
+        return http.put(apiEndpoint + "/" + movie.id, body);
+    }
 
+    console.log(movie);
+    return http.post(apiEndpoint, movie);
 }
 
 export function deleteMovie(movieId) {
