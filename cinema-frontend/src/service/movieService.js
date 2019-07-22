@@ -7,15 +7,19 @@ export function getMovies() {
     return http.get(apiEndpoint);
 }
 
+function movieUrl(id) {
+    return `${apiEndpoint}/${id}`;
+}
+
 export function getMovie(movieId) {
-    return http.get(apiEndpoint + "/" + movieId);
+    return http.get(movieUrl(movieId));
 }
 
 export function saveMovie(movie) {
     if (movie.id) {
         const body = {...movie};
         delete body.id;
-        return http.put(apiEndpoint + "/" + movie.id, body);
+        return http.put(movieUrl(movie.id), body);
     }
 
     console.log(movie);
@@ -23,5 +27,5 @@ export function saveMovie(movie) {
 }
 
 export function deleteMovie(movieId) {
-    return http.delete(apiEndpoint + "/" + movieId);
+    return http.delete(movieUrl(movieId));
 } 
