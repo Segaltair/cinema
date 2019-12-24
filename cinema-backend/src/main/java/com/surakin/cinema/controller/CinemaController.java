@@ -53,8 +53,11 @@ public class CinemaController {
 
     @DeleteMapping(value = "/movie/{id}")
     public void deleteMovie(@PathVariable Integer id, HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000/movie");
         Optional<Movie> movie = movieRepository.findById(id);
-        movieRepository.delete(movie.get());
+        if (movie.isPresent()) {
+            movieRepository.delete(movie.get());
+        } else {
+            throw new RuntimeException("Movie not found " + id);
+        }
     }
 }

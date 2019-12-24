@@ -16,6 +16,11 @@ public class HandleCORS implements HandlerInterceptor {
         if (request.getMethod().equalsIgnoreCase("OPTIONS")) {
             response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
             response.setHeader("Access-Control-Allow-Headers", "content-type");
+            response.addHeader("Access-Control-Allow-Methods", "DELETE");
+            response.setStatus(200);
+        }
+        if (request.getMethod().equalsIgnoreCase("DELETE")) {
+            response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
             response.setStatus(200);
         }
     }
