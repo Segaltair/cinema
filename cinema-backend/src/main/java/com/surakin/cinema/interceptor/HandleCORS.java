@@ -21,7 +21,12 @@ public class HandleCORS implements HandlerInterceptor {
         }
         if (request.getMethod().equalsIgnoreCase("DELETE")) {
             response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-            response.setStatus(200);
+            response.setStatus(200);//todo what if error status from controller?
+        }
+        if (request.getMethod().equalsIgnoreCase("POST")) {
+            //todo header doesnt set if response not null
+            //todo so better move add headers to advice
+            response.setHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         }
     }
 }

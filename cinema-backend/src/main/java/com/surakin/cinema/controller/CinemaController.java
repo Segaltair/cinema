@@ -18,11 +18,13 @@ import java.util.Optional;
 @Log
 public class CinemaController {
 
-    @Autowired
-    private MovieRepository movieRepository;
+    private final MovieRepository movieRepository;
+    private final GenreRepository genreRepository;
 
-    @Autowired
-    private GenreRepository genreRepository;
+    public CinemaController(MovieRepository movieRepository, GenreRepository genreRepository) {
+        this.movieRepository = movieRepository;
+        this.genreRepository = genreRepository;
+    }
 
     @GetMapping(value = "/movie")
     public List<Movie> getMovies(HttpServletResponse response) {
@@ -52,7 +54,7 @@ public class CinemaController {
     }
 
     @DeleteMapping(value = "/movie/{id}")
-    public void deleteMovie(@PathVariable Integer id, HttpServletResponse response) {
+    public void deleteMovie(@PathVariable Integer id) {
         Optional<Movie> movie = movieRepository.findById(id);
         if (movie.isPresent()) {
             movieRepository.delete(movie.get());

@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan("com.surakin.cinema")
 @EntityScan(basePackages = "com.surakin.cinema.entity")
 public class CinemaApp {
 

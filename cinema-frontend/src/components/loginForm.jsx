@@ -1,10 +1,18 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
+import {authenticate} from "../service/userService";
 
 class LoginForm extends Form {
+    state = {
+        data: {
+            login: "",
+            password: ""
+        },
+        errors: []
+    };
     schema = {
-        username: Joi.string().required().label("Username"),
+        login: Joi.string().required().label("Login"),
         password: Joi.string().required().label("Password")
     };
 
@@ -13,16 +21,16 @@ class LoginForm extends Form {
             <div>
                 <h1>Login</h1>
                 <form onSubmit={this.handleSubmit}>
-                    {this.renderInput("username", "Username")}
+                    {this.renderInput("login", "Login")}
                     {this.renderInput("password", "Password", "password")}
-                    {this.renderButton("Login")}
+                    {this.renderButton("Sign in")}
                 </form>
             </div>
         );
     }
 
-    doSubmit = () => {
-        console.log("submit")
+    doSubmit = async () => {
+        await authenticate(this.state.data);
     }
 }
 
