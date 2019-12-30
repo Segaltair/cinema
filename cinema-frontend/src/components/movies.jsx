@@ -137,8 +137,6 @@ export default class Movies extends Component {
 
             this.setState({movies: originalMovies})
         }
-
-
     };
 
     handlePageChange = (pageNumber) => {

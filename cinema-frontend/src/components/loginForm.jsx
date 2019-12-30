@@ -30,7 +30,11 @@ class LoginForm extends Form {
     }
 
     doSubmit = async () => {
-        await authenticate(this.state.data);
+        const request = {
+            usernameOrEmail: this.state.data.login,
+            password: this.state.data.password
+        };
+        await authenticate(request);
     }
 }
 

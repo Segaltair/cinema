@@ -19,8 +19,8 @@ public class UserController {
 
     @PostMapping(value = "/login")
     public User authenticate(@RequestBody User user, HttpServletResponse response) {
-        if (userRepository.findUserByLoginAndPassword(user.getLogin(), user.getPassword()) != null) {
-            response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");//todo move to advice
+        if (userRepository.findByUsernameOrEmail(user.getUsername(), user.getPassword()) != null) {
+//            response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");//todo move to advice
             return user;
         }
         else {

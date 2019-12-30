@@ -1,10 +1,10 @@
-import http from "./httpService";
+import {httpPost, httpGet, httpDelete, httpPut} from "./httpService";
 import {apiUrl} from "../config";
 
 const apiEndpoint = apiUrl + "/movie";
 
 export function getMovies() {
-    return http.get(apiEndpoint);
+    return httpGet(apiEndpoint);
 }
 
 function movieUrl(id) {
@@ -12,18 +12,18 @@ function movieUrl(id) {
 }
 
 export function getMovie(movieId) {
-    return http.get(movieUrl(movieId));
+    return httpGet(movieUrl(movieId));
 }
 
 export function saveMovie(movie) {
     if (movie.id) {
         const body = {...movie};
         delete body.id;
-        return http.put(movieUrl(movie.id), body);
+        return httpPut(movieUrl(movie.id), body);
     }
-    return http.post(apiEndpoint, movie);
+    return httpPost(apiEndpoint, movie);
 }
 
 export function deleteMovie(movieId) {
-    return http.delete(movieUrl(movieId));
+    return httpDelete(movieUrl(movieId));
 } 
