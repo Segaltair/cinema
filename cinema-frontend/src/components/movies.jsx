@@ -22,10 +22,17 @@ export default class Movies extends Component {
     };
 
     async componentDidMount() {
-        const {data} = await getGenres();
-        const genres = [{id: null, name: "All genres"}, ...data];
-        const {data: movies} = await getMovies();
-        this.setState({movies, genres});
+        try {
+            const {data} = await getGenres();
+            const genres = [{id: null, name: "All genres"}, ...data];
+            const {data: movies} = await getMovies();
+            this.setState({movies, genres});
+        } catch (e) {
+            if (e.response && e.response.status === 401) {
+                toast("Войдите в учетную запись!");
+                this.props.history.push("/login");
+            }
+        }
     }
 
     render() {

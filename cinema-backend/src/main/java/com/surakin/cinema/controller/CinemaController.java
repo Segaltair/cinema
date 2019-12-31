@@ -28,14 +28,12 @@ public class CinemaController {
 
     @GetMapping(value = "/movie")
     public List<Movie> getMovies(HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         return movieRepository.findAll();
     }
 
     @GetMapping(value = "/movie/{id}")
     public ResponseEntity getMovie(@PathVariable Integer id, HttpServletResponse response) {
         Optional<Movie> movie = movieRepository.findById(id);
-        response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         return movie
                 .map(movie1 -> new ResponseEntity<>(movie1, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -43,13 +41,11 @@ public class CinemaController {
 
     @GetMapping(value = "/genre")
     public List<MovieGenre> getGenres(HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         return genreRepository.findAll();
     }
 
     @PostMapping(value = "/movie")
     public Movie saveMovie(@RequestBody Movie movie, HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         return movieRepository.save(movie);
     }
 

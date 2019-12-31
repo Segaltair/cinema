@@ -6,15 +6,15 @@ import Form from "./common/form";
 class RegisterForm extends Form {
     state = {
         data: {
-            username: "wqe",
-            password: "qwe",
-            email: "qwe"
+            username: "",
+            password: "",
+            email: ""
         },
         errors: []
     };
     schema = {
         email: Joi.string().required().email().label("Email"),
-        password: Joi.string().required().min(5).label("Password"),
+        password: Joi.string().required().min(4).label("Password"),
         username: Joi.string().required().label("Username")
     };
 

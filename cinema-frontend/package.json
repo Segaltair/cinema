@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "aws-amplify": "^2.2.1",
     "axios": "^0.18.1",
     "bootstrap": "^4.1.1",
     "joi-browser": "^13.4.0",

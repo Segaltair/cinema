@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
@@ -45,8 +44,7 @@ public class AuthController {
     JwtTokenProvider tokenProvider;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.getUsernameOrEmail(),
@@ -61,8 +59,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest, HttpServletResponse response) {
-        response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         if(userRepository.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity<>(new ApiResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
