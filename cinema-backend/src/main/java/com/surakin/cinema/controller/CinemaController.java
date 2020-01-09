@@ -2,20 +2,18 @@ package com.surakin.cinema.controller;
 
 import com.surakin.cinema.entity.Movie;
 import com.surakin.cinema.entity.MovieGenre;
+import com.surakin.cinema.entity.RoleName;
 import com.surakin.cinema.repository.GenreRepository;
 import com.surakin.cinema.repository.MovieRepository;
-import lombok.extern.java.Log;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.Optional;
 
 @RestController
-@Log
 public class CinemaController {
 
     private final MovieRepository movieRepository;
@@ -27,12 +25,12 @@ public class CinemaController {
     }
 
     @GetMapping(value = "/movie")
-    public List<Movie> getMovies(HttpServletResponse response) {
+    public List<Movie> getMovies() {
         return movieRepository.findAll();
     }
 
     @GetMapping(value = "/movie/{id}")
-    public ResponseEntity getMovie(@PathVariable Integer id, HttpServletResponse response) {
+    public ResponseEntity getMovie(@PathVariable Long id) {
         Optional<Movie> movie = movieRepository.findById(id);
         return movie
                 .map(movie1 -> new ResponseEntity<>(movie1, HttpStatus.OK))
@@ -40,17 +38,19 @@ public class CinemaController {
     }
 
     @GetMapping(value = "/genre")
-    public List<MovieGenre> getGenres(HttpServletResponse response) {
+    public List<MovieGenre> getGenres() {
         return genreRepository.findAll();
     }
 
     @PostMapping(value = "/movie")
-    public Movie saveMovie(@RequestBody Movie movie, HttpServletResponse response) {
+    @Secured(RoleName.Names.ADMIN)
+    public Movie saveMovie(@RequestBody Movie movie) {
         return movieRepository.save(movie);
     }
 
     @DeleteMapping(value = "/movie/{id}")
-    public void deleteMovie(@PathVariable Integer id) {
+    @Secured(RoleName.Names.ADMIN)
+    public void deleteMovie(@PathVariable Long id) {
         Optional<Movie> movie = movieRepository.findById(id);
         if (movie.isPresent()) {
             movieRepository.delete(movie.get());

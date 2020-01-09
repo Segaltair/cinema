@@ -5,7 +5,7 @@ import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
 
-public interface UserRepository extends Repository<User, Integer> {
+public interface UserRepository extends Repository<User, Long> {
     User findUserByUsernameAndPassword(String username, String password);
 
     Optional<User> findByUsernameOrEmail(String username, String email);

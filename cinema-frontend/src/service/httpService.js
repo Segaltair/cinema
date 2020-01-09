@@ -7,8 +7,12 @@ axios.interceptors.response.use(null, error => {
     const code = error.response && error.response.status ? error.response.status : -1;
     if (isError) {
         if (code !== 401) {
-            toast("Unexpected error");
-            console.log(error);
+            if (error.response && error.response.status && error.response.status && error.response.data.message) {
+                toast(error.response.status + ": " + error.response.data.message)
+            } else {
+                toast("Unexpected error");
+                console.log(error);
+            }
         }
     }
 

@@ -5,9 +5,10 @@ import {toast} from "react-toastify";
 
 const apiEndpoint = apiUrl + "/auth/";
 
-export function authenticate(user) {
+export function authenticate(user, props) {
     httpPost(apiEndpoint + "signin", user).then(response => {
         localStorage.setItem(ACCESS_TOKEN, response.data.accessToken);
+        props.history.push("/");
     }).catch(e => {
         if (e.response && e.response.status === 401) {
            toast("Wrong password or username!");

@@ -4,10 +4,11 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name = "movie")
 public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String title;
     @ManyToOne
     @JoinColumn(name = "genre_id")
@@ -18,11 +19,11 @@ public class Movie {
     private Date publishDate;
     private Boolean liked;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -77,7 +78,7 @@ public class Movie {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Movie )) return false;
+        if (!(o instanceof Movie)) return false;
         return id != null && id.equals(((Movie) o).getId());
     }
 

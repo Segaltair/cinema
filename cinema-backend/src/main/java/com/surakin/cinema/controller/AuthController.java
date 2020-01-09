@@ -1,10 +1,14 @@
 package com.surakin.cinema.controller;
 
+import com.surakin.cinema.entity.Role;
+import com.surakin.cinema.entity.RoleName;
 import com.surakin.cinema.entity.User;
+import com.surakin.cinema.exception.AppException;
 import com.surakin.cinema.payload.ApiResponse;
 import com.surakin.cinema.payload.JwtAuthenticationResponse;
 import com.surakin.cinema.payload.LoginRequest;
 import com.surakin.cinema.payload.SignUpRequest;
+import com.surakin.cinema.repository.RoleRepository;
 import com.surakin.cinema.repository.UserRepository;
 import com.surakin.cinema.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +38,8 @@ public class AuthController {
     @Autowired
     UserRepository userRepository;
 
-//    @Autowired
-//    RoleRepository roleRepository;
+    @Autowired
+    RoleRepository roleRepository;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -60,12 +64,12 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if(userRepository.existsByUsername(signUpRequest.getUsername())) {
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return new ResponseEntity<>(new ApiResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
 
-        if(userRepository.existsByEmail(signUpRequest.getEmail())) {
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return new ResponseEntity<>(new ApiResponse(false, "Email Address already in use!"),
                     HttpStatus.BAD_REQUEST);
         }
@@ -75,10 +79,10 @@ public class AuthController {
 
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
-//        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
-//                .orElseThrow(() -> new AppException("User Role not set."));
-//
-//        user.setRoles(Collections.singleton(userRole));
+        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                .orElseThrow(() -> new AppException("User Role not set."));
+
+        user.setRoles(Collections.singleton(userRole));
 
         User result = userRepository.save(user);
 

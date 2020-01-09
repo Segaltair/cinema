@@ -2,27 +2,50 @@ package com.surakin.cinema.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Data
+@Table(name = "movie_genre")
 public class MovieGenre {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
     private String name;
 
     @JsonIgnore
-    @OneToMany(
+    @OneToMany(//todo need to learn everything about tie
             fetch = FetchType.LAZY,
             mappedBy = "genre",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     private List<Movie> movies = new ArrayList<>();
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<Movie> getMovies() {
+        return movies;
+    }
+
+    public void setMovies(List<Movie> movies) {
+        this.movies = movies;
+    }
 }

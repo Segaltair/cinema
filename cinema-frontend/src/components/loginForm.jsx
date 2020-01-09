@@ -34,7 +34,7 @@ class LoginForm extends Form {
             usernameOrEmail: this.state.data.login,
             password: this.state.data.password
         };
-        await authenticate(request);
+        await authenticate(request, this.props);
     }
 }
 
