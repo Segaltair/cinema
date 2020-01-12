@@ -1,6 +1,6 @@
 import axios from "axios";
 import {toast} from "react-toastify";
-import {ACCESS_TOKEN} from "../utils/constants";
+import {isAuth, getToken} from "../utils/storage";
 
 axios.interceptors.response.use(null, error => {
     const isError = error.response && error.response.status >= 400 && error.response.status < 500;
@@ -20,10 +20,10 @@ axios.interceptors.response.use(null, error => {
 });
 
 function getConfig() {
-    if (localStorage.getItem(ACCESS_TOKEN)) {
+    if (isAuth()) {
         return {
             headers: {
-                "Authorization": "Bearer " + localStorage.getItem(ACCESS_TOKEN)
+                "Authorization": "Bearer " + getToken()
             }
         }
     } else {

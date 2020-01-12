@@ -1,17 +1,17 @@
 import {httpPost} from "./httpService";
 import {apiUrl} from "../config";
-import {ACCESS_TOKEN} from "../utils/constants";
+import {setUsernameAndToken} from "../utils/storage";
 import {toast} from "react-toastify";
 
 const apiEndpoint = apiUrl + "/auth/";
 
 export function authenticate(user, props) {
     httpPost(apiEndpoint + "signin", user).then(response => {
-        localStorage.setItem(ACCESS_TOKEN, response.data.accessToken);
+        setUsernameAndToken(user.usernameOrEmail, response.data.accessToken);
         props.history.push("/");
     }).catch(e => {
         if (e.response && e.response.status === 401) {
-           toast("Wrong password or username!");
+            toast("Wrong password or username!");
         }
     });
 }
