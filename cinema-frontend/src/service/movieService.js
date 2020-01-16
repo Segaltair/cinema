@@ -1,7 +1,7 @@
 import {httpPost, httpGet, httpDelete, httpPut} from "./httpService";
-import {apiUrl} from "../config";
+import {CINEMA_URL} from "../utils/constants";
 
-const apiEndpoint = apiUrl + "/movie";
+const apiEndpoint = CINEMA_URL + "/movie";
 
 export function getMovies() {
     return httpGet(apiEndpoint);

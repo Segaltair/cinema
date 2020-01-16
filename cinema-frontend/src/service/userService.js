@@ -1,12 +1,10 @@
 import {httpPost} from "./httpService";
-import {apiUrl} from "../config";
 import {setUsernameAndToken} from "../utils/storage";
 import {toast} from "react-toastify";
-
-const apiEndpoint = apiUrl + "/auth/";
+import {AUTH_URL} from "../utils/constants";
 
 export function authenticate(user, props) {
-    httpPost(apiEndpoint + "signin", user).then(response => {
+    httpPost(AUTH_URL + "signin", user).then(response => {
         setUsernameAndToken(user.usernameOrEmail, response.data.accessToken);
         props.history.push("/");
     }).catch(e => {
@@ -17,5 +15,5 @@ export function authenticate(user, props) {
 }
 
 export function register(user) {
-    return httpPost(apiEndpoint + "signup", user);
+    return httpPost(AUTH_URL + "signup", user);
 }

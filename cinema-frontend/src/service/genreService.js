@@ -1,6 +1,6 @@
 import {httpGet} from "./httpService";
-import {apiUrl} from "../config";
+import {CINEMA_URL} from "../utils/constants";
 
 export function getGenres() {
-    return httpGet(apiUrl + "/genre");
+    return httpGet(CINEMA_URL + "/genre");
 }
