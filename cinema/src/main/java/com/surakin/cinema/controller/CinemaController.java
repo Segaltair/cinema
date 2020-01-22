@@ -1,5 +1,6 @@
 package com.surakin.cinema.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.surakin.cinema.entity.Movie;
 import com.surakin.cinema.entity.MovieGenre;
 import com.surakin.entity.RoleName;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,8 +27,13 @@ public class CinemaController {
     }
 
     @GetMapping(value = "/movie")
+    @HystrixCommand(fallbackMethod = "recommendationFallback")
     public List<Movie> getMovies() {
         return movieRepository.findAll();
+    }
+
+    public List<Movie> recommendationFallback() {
+        return new ArrayList<>();
     }
 
     @GetMapping(value = "/movie/{id}")

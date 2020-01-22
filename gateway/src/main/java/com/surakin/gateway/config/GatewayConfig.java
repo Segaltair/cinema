@@ -58,6 +58,8 @@ public class GatewayConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/auth/**")
                 .permitAll()
+//                .antMatchers("/actuator/**")
+//                .permitAll()
                 .anyRequest()
                 .authenticated();
 
