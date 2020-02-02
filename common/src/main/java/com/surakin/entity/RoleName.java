@@ -1,5 +1,10 @@
 package com.surakin.entity;
 
+/**
+ * Список ролей
+ *
+ * @author Surakin Sergey created on 09.01.2020
+ */
 public enum RoleName {
     ROLE_ADMIN(Names.ADMIN),
     ROLE_USER(Names.USER);

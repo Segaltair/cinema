@@ -4,6 +4,11 @@ import com.surakin.entity.RoleName;
 
 import javax.persistence.*;
 
+/**
+ * Сущность "Роль пользователя"
+ *
+ * @author Surakin Sergey created on 09.01.2020
+ */
 @Entity
 @Table(name="roles")
 public class Role {

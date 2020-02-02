@@ -3,6 +3,11 @@ package com.surakin.gateway.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+/**
+ * Ошибка 404
+ *
+ * @author Surakin Sergey created on 30.12.2019
+ */
 @ResponseStatus(HttpStatus.NOT_FOUND)
 public class ResourceNotFoundException extends RuntimeException {
     private String resourceName;

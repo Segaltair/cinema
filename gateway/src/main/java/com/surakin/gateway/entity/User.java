@@ -4,6 +4,11 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Сущность "Пользователь"
+ *
+ * @author Surakin Sergey created on 26.12.2019
+ */
 @Entity
 @Table(name = "user")
 public class User {

@@ -19,6 +19,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 
+/**
+ * Настройки для сервиса gateway
+ *
+ * @author Surakin Sergey created on 30.12.2019
+ */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(
@@ -42,6 +47,11 @@ public class GatewayConfig extends WebSecurityConfigurerAdapter {
         return authenticationManager();
     }
 
+    /**
+     * Конфигурация spring security
+     *
+     * @param http базовый конфиг
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -67,6 +77,9 @@ public class GatewayConfig extends WebSecurityConfigurerAdapter {
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
+    /**
+     * Настройки cors policy
+     * */
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();

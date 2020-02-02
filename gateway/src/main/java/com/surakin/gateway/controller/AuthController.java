@@ -28,6 +28,11 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.Collections;
 
+/**
+ * Контроллер для аутентификации пользователя
+ *
+ * @author Surakin Sergey created on 30.12.2019
+ */
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -50,6 +55,12 @@ public class AuthController {
         this.tokenProvider = tokenProvider;
     }
 
+    /**
+     * Аутентификация пользователя
+     *
+     * @param loginRequest информация о пользователе
+     * @return статус аутентификации и токен
+     */
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
         Authentication authentication = authManager.authenticate(
@@ -65,6 +76,12 @@ public class AuthController {
         return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
     }
 
+    /**
+     * Регистрация
+     *
+     * @param signUpRequest информация о пользователе
+     * @return статус регистрации или ошибка
+     */
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {

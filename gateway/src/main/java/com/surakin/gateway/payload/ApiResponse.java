@@ -1,27 +1,21 @@
 package com.surakin.gateway.payload;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+/**
+ * Ответ на регистрацию
+ *
+ * @author Surakin Sergey created on 30.12.2019
+ */
+@AllArgsConstructor
+@Getter
+@Setter
 public class ApiResponse {
+    /** Статус */
     private Boolean success;
+
+    /** Сообщение */
     private String message;
-
-    public ApiResponse(Boolean success, String message) {
-        this.success = success;
-        this.message = message;
-    }
-
-    public Boolean getSuccess() {
-        return success;
-    }
-
-    public void setSuccess(Boolean success) {
-        this.success = success;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
 }
